@@ -3,10 +3,10 @@ package com.sparta.northwind.controller;
 import com.sparta.northwind.entities.Customer;
 import com.sparta.northwind.repositories.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -50,5 +50,45 @@ public class CustomerController {
         return customer;
     }
 
+    @PutMapping("/add-customer/{id}/{companyName}")
+    public ResponseEntity<String> addCustomer(@PathVariable String id,
+                                              @PathVariable String companyName) {
+        String message = "";
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("content-type", "application/json");
+        ResponseEntity<String> res;
 
+        try {
+            Customer customer = new Customer();
+            customer.setId(id);
+            customer.setCompanyName(companyName);
+            repo.save(customer);
+            message = "user " + customer.getId() + " saved";
+            res = new ResponseEntity<>(message, headers, HttpStatus.CREATED);
+        } catch (Exception e) {
+            message = "something went wrong, try again";
+            res = new ResponseEntity<>(message, headers, HttpStatus.BAD_GATEWAY);
+            e.printStackTrace();
+        }
+        return res;
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> removeCustomer(@PathVariable String id) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("content-type", "application/json");
+        ResponseEntity<String> res;
+        String message = "";
+        try {
+            repo.deleteById(id);
+            message = "customer " + id + " deleted";
+            res = new ResponseEntity<>(message, headers, HttpStatus.ACCEPTED);
+            repo.save();
+        } catch (Exception e) {
+            message = "something went wrong, try again";
+            res = new ResponseEntity<>(message, headers, HttpStatus.BAD_GATEWAY);
+            e.printStackTrace();
+        }
+        return res;
+    }
 }
