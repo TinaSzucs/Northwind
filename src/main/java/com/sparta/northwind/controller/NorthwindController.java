@@ -3,5 +3,5 @@ package com.sparta.northwind.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class NorthwindCtonroller {
+public class NorthwindController {
 }
