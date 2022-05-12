@@ -53,9 +53,9 @@ public class CustomerController {
     @PutMapping("/add-customer/{id}/{companyName}")
     public ResponseEntity<String> addCustomer(@PathVariable String id,
                                               @PathVariable String companyName) {
-        String message = "";
         HttpHeaders headers = new HttpHeaders();
         headers.add("content-type", "application/json");
+        String message = "";
         ResponseEntity<String> res;
 
         try {
@@ -73,6 +73,34 @@ public class CustomerController {
         return res;
     }
 
+    @PatchMapping("/update/{id}/{companyName}")
+    public ResponseEntity<String> update(@PathVariable String id,
+                                         @PathVariable String companyName) {
+        ResponseEntity<String> res;
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("content-type", "application/json");
+        String message = "";
+        try {
+            Optional<Customer> customer = repo.findById(id);
+
+            if(customer.isPresent()) {
+                Customer c = customer.get();
+                c.setCompanyName(companyName);
+                message = "{\"message\":\"customer " + id + " was updated\"}";
+                res = new ResponseEntity<>(message, headers, HttpStatus.OK);
+                repo.save(c);
+            } else {
+                message = "{\"message\":\"customer " + id + " was not found\"}";
+                res = new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            message = "{\"message\":\"something went wrong\"}";
+            res = new ResponseEntity<>(message, headers, HttpStatus.BAD_GATEWAY);
+            e.printStackTrace();
+        }
+        return res;
+    }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> removeCustomer(@PathVariable String id) {
         HttpHeaders headers = new HttpHeaders();
@@ -81,11 +109,10 @@ public class CustomerController {
         String message = "";
         try {
             repo.deleteById(id);
-            message = "customer " + id + " deleted";
+            message = "{\"message\":\"customer " + id + " deleted\"}";
             res = new ResponseEntity<>(message, headers, HttpStatus.ACCEPTED);
-            repo.save();
         } catch (Exception e) {
-            message = "something went wrong, try again";
+            message = "{\"message\":\"something went wrong\"}";
             res = new ResponseEntity<>(message, headers, HttpStatus.BAD_GATEWAY);
             e.printStackTrace();
         }
