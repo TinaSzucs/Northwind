@@ -108,9 +108,15 @@ public class CustomerController {
         ResponseEntity<String> res;
         String message = "";
         try {
-            repo.deleteById(id);
-            message = "{\"message\":\"customer " + id + " deleted\"}";
-            res = new ResponseEntity<>(message, headers, HttpStatus.ACCEPTED);
+            Optional<Customer> customer = repo.findById(id);
+            if(customer.isPresent()) {
+                repo.deleteById(id);
+                message = "{\"message\":\"customer " + id + " deleted\"}";
+                res = new ResponseEntity<>(message, headers, HttpStatus.ACCEPTED);
+            } else {
+                message = "{\"message\":\"customer " + id + " was not found\"}";
+                res = new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
+            }
         } catch (Exception e) {
             message = "{\"message\":\"something went wrong\"}";
             res = new ResponseEntity<>(message, headers, HttpStatus.BAD_GATEWAY);
