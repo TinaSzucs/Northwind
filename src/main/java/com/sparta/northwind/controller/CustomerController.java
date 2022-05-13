@@ -22,6 +22,15 @@ public class CustomerController {
         return headers;
     }
 
+    public ResponseEntity handleError(Exception e,
+                                      HttpHeaders headers) {
+        String message = "something went wrong, try again";
+        ResponseEntity<String> res = new ResponseEntity<>(message, headers,
+                HttpStatus.BAD_GATEWAY);
+        e.printStackTrace();
+        return res;
+    }
+
     @GetMapping("/all-customers")
     public List<Customer> getAllCustomers() {
         List<Customer> customers = null;
@@ -71,9 +80,7 @@ public class CustomerController {
             message = "user " + customer.getId() + " saved";
             res = new ResponseEntity<>(message, headers, HttpStatus.CREATED);
         } catch (Exception e) {
-            message = "something went wrong, try again";
-            res = new ResponseEntity<>(message, headers, HttpStatus.BAD_GATEWAY);
-            e.printStackTrace();
+            res = handleError(e, headers);
         }
         return res;
     }
@@ -98,9 +105,7 @@ public class CustomerController {
                 res = new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
             }
         } catch (Exception e) {
-            message = "{\"message\":\"something went wrong\"}";
-            res = new ResponseEntity<>(message, headers, HttpStatus.BAD_GATEWAY);
-            e.printStackTrace();
+            res = handleError(e, headers);
         }
         return res;
     }
@@ -121,9 +126,7 @@ public class CustomerController {
                 res = new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
             }
         } catch (Exception e) {
-            message = "{\"message\":\"something went wrong\"}";
-            res = new ResponseEntity<>(message, headers, HttpStatus.BAD_GATEWAY);
-            e.printStackTrace();
+            res = handleError(e, headers);
         }
         return res;
     }
