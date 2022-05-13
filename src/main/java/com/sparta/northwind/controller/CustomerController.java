@@ -24,7 +24,7 @@ public class CustomerController {
 
     public ResponseEntity handleError(Exception e,
                                       HttpHeaders headers) {
-        String message = "something went wrong, try again";
+        String message = "{\"message\":\"something went wrong\"}";
         ResponseEntity<String> res = new ResponseEntity<>(message, headers,
                 HttpStatus.BAD_GATEWAY);
         e.printStackTrace();
