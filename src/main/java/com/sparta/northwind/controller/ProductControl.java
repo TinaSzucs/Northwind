@@ -1,0 +1,42 @@
+package com.sparta.northwind.controller;
+
+import com.sparta.northwind.entities.Product;
+import com.sparta.northwind.repositories.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+public class ProductControl {
+    @Autowired
+    private ProductRepository repository;
+
+    @GetMapping("/product/getAllProducts")
+    public List<Product> getAllProducts() {
+        return repository.findAll();
+    }
+
+    @GetMapping("/product/getById/{id}")
+    public Optional<Product> getProductById(@PathVariable Integer id) {
+        return repository.findById(id);
+    }
+
+    @PutMapping("/product/add")
+    public ResponseEntity<String> addProduct(@RequestBody Product product) {
+        repository.save(product);
+        return ResponseEntity.ok("ok");
+    }
+
+    @DeleteMapping("/product/deleteById/{id}")
+    public ResponseEntity<String> addProduct(@PathVariable Integer id) {
+        repository.deleteById(id);
+        return ResponseEntity.ok("ok");
+    }
+
+
+
+}
