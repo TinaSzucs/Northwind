@@ -37,6 +37,7 @@ public class CustomerController {
 
         try {
             customers = repo.findAll();
+            System.out.println(customers.size());
         } catch (Exception e) {
             e.printStackTrace();
         }
