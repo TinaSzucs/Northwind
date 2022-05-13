@@ -1,39 +1,62 @@
 package com.sparta.northwind;
 
-public class Response{
-	private Object country;
-	private Object contactTitle;
-	private Object address;
-	private Object city;
-	private Object phone;
-	private Object contactName;
-	private String companyName;
-	private Object postalCode;
-	private String id;
-	private Object region;
-	private Object fax;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-	public Object getCountry(){
+public class Response{
+	@JsonProperty("country")
+	private String country;
+
+	@JsonProperty("contactTitle")
+	private String contactTitle;
+
+	@JsonProperty("address")
+	private String address;
+
+	@JsonProperty("city")
+	private String city;
+
+	@JsonProperty("phone")
+	private String phone;
+
+	@JsonProperty("contactName")
+	private String contactName;
+
+	@JsonProperty("companyName")
+	private String companyName;
+
+	@JsonProperty("postalCode")
+	private String postalCode;
+
+	@JsonProperty("id")
+	private String id;
+
+	@JsonProperty("region")
+	private Object region;
+
+	@JsonProperty("fax")
+	private String fax;
+
+	public String getCountry(){
 		return country;
 	}
 
-	public Object getContactTitle(){
+	public String getContactTitle(){
 		return contactTitle;
 	}
 
-	public Object getAddress(){
+	public String getAddress(){
 		return address;
 	}
 
-	public Object getCity(){
+	public String getCity(){
 		return city;
 	}
 
-	public Object getPhone(){
+	public String getPhone(){
 		return phone;
 	}
 
-	public Object getContactName(){
+	public String getContactName(){
 		return contactName;
 	}
 
@@ -41,7 +64,7 @@ public class Response{
 		return companyName;
 	}
 
-	public Object getPostalCode(){
+	public String getPostalCode(){
 		return postalCode;
 	}
 
@@ -53,7 +76,7 @@ public class Response{
 		return region;
 	}
 
-	public Object getFax(){
+	public String getFax(){
 		return fax;
 	}
 }
