@@ -3,6 +3,7 @@ package com.sparta.northwind.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.northwind.entities.Employee;
+import org.springframework.http.HttpHeaders;
 import com.sparta.northwind.repositories.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-import static org.springframework.http.client.SimpleBufferingClientHttpRequest.addHeaders;
+
 
 @RestController
 public class EmployeeController {
@@ -70,8 +71,17 @@ public class EmployeeController {
         return response;
     }
 
+    public HttpHeaders addHeaders() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("content-type", "application/json");
+        return headers;
+    }
+
+    public String addEmplyoee() {
+        return "{\"message\":\"emplyee";
+    }
     @PutMapping("/add-employee/{id}/{address}")
-    public ResponseEntity<String> addEmplyoee(@PathVariable String id,
+    public ResponseEntity<String> addEmplyoee(@PathVariable int id,
                                               @PathVariable String address) {
         HttpHeaders headers = addHeaders();
         String message = "";
