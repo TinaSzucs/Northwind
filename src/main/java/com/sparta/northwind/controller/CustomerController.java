@@ -16,6 +16,10 @@ public class CustomerController {
     @Autowired
     private CustomerRepository repo;
 
+    public String addCustomerMessage() {
+        return "{\"message\":\"customer ";
+    }
+
     public HttpHeaders addHeaders() {
         HttpHeaders headers = new HttpHeaders();
         headers.add("content-type", "application/json");
@@ -78,7 +82,7 @@ public class CustomerController {
             customer.setId(id);
             customer.setCompanyName(companyName);
             repo.save(customer);
-            message = "user " + customer.getId() + " saved";
+            message = addCustomerMessage() + id + " was saved\"}";
             res = new ResponseEntity<>(message, headers, HttpStatus.CREATED);
         } catch (Exception e) {
             res = handleError(e, headers);
@@ -98,11 +102,11 @@ public class CustomerController {
             if(customer.isPresent()) {
                 Customer c = customer.get();
                 c.setCompanyName(companyName);
-                message = "{\"message\":\"customer " + id + " was updated\"}";
+                message = addCustomerMessage() + id + " was updated\"}";
                 res = new ResponseEntity<>(message, headers, HttpStatus.OK);
                 repo.save(c);
             } else {
-                message = "{\"message\":\"customer " + id + " was not found\"}";
+                message = addCustomerMessage() + id + " was not found\"}";
                 res = new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
             }
         } catch (Exception e) {
@@ -120,10 +124,10 @@ public class CustomerController {
             Optional<Customer> customer = repo.findById(id);
             if(customer.isPresent()) {
                 repo.deleteById(id);
-                message = "{\"message\":\"customer " + id + " deleted\"}";
+                message = addCustomerMessage() + id + " deleted\"}";
                 res = new ResponseEntity<>(message, headers, HttpStatus.ACCEPTED);
             } else {
-                message = "{\"message\":\"customer " + id + " was not found\"}";
+                message = addCustomerMessage() + id + " was not found\"}";
                 res = new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
             }
         } catch (Exception e) {
