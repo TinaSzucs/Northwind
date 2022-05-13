@@ -16,6 +16,12 @@ public class CustomerController {
     @Autowired
     private CustomerRepository repo;
 
+    public HttpHeaders addHeaders() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("content-type", "application/json");
+        return headers;
+    }
+
     @GetMapping("/all-customers")
     public List<Customer> getAllCustomers() {
         List<Customer> customers = null;
@@ -53,8 +59,7 @@ public class CustomerController {
     @PutMapping("/add-customer/{id}/{companyName}")
     public ResponseEntity<String> addCustomer(@PathVariable String id,
                                               @PathVariable String companyName) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("content-type", "application/json");
+        HttpHeaders headers = addHeaders();
         String message = "";
         ResponseEntity<String> res;
 
@@ -76,9 +81,8 @@ public class CustomerController {
     @PatchMapping("/update/{id}/{companyName}")
     public ResponseEntity<String> update(@PathVariable String id,
                                          @PathVariable String companyName) {
+        HttpHeaders headers = addHeaders();
         ResponseEntity<String> res;
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("content-type", "application/json");
         String message = "";
         try {
             Optional<Customer> customer = repo.findById(id);
@@ -103,8 +107,7 @@ public class CustomerController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> removeCustomer(@PathVariable String id) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("content-type", "application/json");
+        HttpHeaders headers = addHeaders();
         ResponseEntity<String> res;
         String message = "";
         try {
